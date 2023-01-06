@@ -15,6 +15,7 @@ extern "C" {
 #else
 #include <stdlib.h>
 #include <stdio.h>
+#include <stddef.h>
 #endif
 
 #include "platform.h"
