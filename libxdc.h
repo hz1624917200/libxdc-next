@@ -48,11 +48,23 @@ typedef enum disassembler_mode_s {
 	mode_64,
 } disassembler_mode_t;
 
+typedef struct libxdc_config_s {
+	uint64_t filter[4][2];
+	void* (*page_cache_fetch_fptr)(void*, uint64_t, bool*);
+	void* page_cache_fetch_opaque;
+	void* bitmap_ptr;
+	size_t bitmap_size;
+	// first size_t data used for storing signal count
+	uint32_t* signal_ptr;
+	uint32_t signal_size;
+	bool align_psb;
+} libxdc_config_t;
+
 uint16_t libxdc_get_release_version(void);
 
 void libxdc_reset_trace_cache(libxdc_t* self);
 
-libxdc_t* libxdc_init(uint64_t filter[4][2], void* (*page_cache_fetch_fptr)(void*, uint64_t, bool*), void* page_cache_fetch_opaque, void* bitmap_ptr, size_t bitmap_size);
+libxdc_t* libxdc_init(libxdc_config_t* config);
 decoder_result_t libxdc_decode(libxdc_t* self, uint8_t* data, size_t len);
 
 uint64_t libxdc_bitmap_get_hash(libxdc_t* self);
@@ -61,7 +73,7 @@ uint64_t libxdc_get_page_fault_addr(libxdc_t* self);
 void libxdc_free(libxdc_t* self);
 void libxdc_bitmap_reset(libxdc_t* self);
 
-void libxdc_register_bb_callback(libxdc_t* self,  void (*basic_block_callback)(void*, uint64_t, uint64_t), void* basic_block_callback_opaque);
+void libxdc_register_bb_callback(libxdc_t* self,  void (*basic_block_callback)(void*, disassembler_mode_t, uint64_t, uint64_t), void* basic_block_callback_opaque);
 void libxdc_register_edge_callback(libxdc_t* self,  void (*edge_callback)(void*, uint64_t, uint64_t), void* edge_callback_opaque);
 void libxdc_register_ip_callback(libxdc_t* self,  void (*ip_callback)(void*, uint64_t), void* ip_callback_opaque);
 
