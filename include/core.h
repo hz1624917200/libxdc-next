@@ -79,10 +79,10 @@ typedef struct fuzz_bitmap_s {
 	uint32_t bitmap_size;
 } fuzz_bitmap_t;
 
-typedef struct fuzz_signal_s {
+typedef struct fuzz_cov_s {
 	uint32_t* data;
 	uint32_t size;
-} fuzz_signal_t;
+} fuzz_cov_t;
 
 typedef struct{
 	uint16_t opcode;
@@ -98,7 +98,7 @@ typedef enum disas_result_s {
 	disas_out_of_bounds,
 	disas_infinite_loop,
 	disas_page_fault,
-	disas_signal_ovf,
+	disas_cov_ovf,
 } disas_result_t;
 
 
@@ -125,7 +125,7 @@ typedef struct disassembler_s{
 	bool has_pending_indirect_branch;
 	uint64_t pending_indirect_branch_src;
 	fuzz_bitmap_t* fuzz_bitmap;
-	fuzz_signal_t* fuzz_signal;
+	fuzz_cov_t* fuzz_cov;
 	trace_cache_t* trace_cache;
 
 	uint8_t disassemble_cache[32];
@@ -135,7 +135,7 @@ typedef struct disassembler_s{
 	csh handle_64;
 
 	bool trace_mode;
-	bool signal_overflow;
+	bool cov_overflow;
 
 	void* (*page_cache_fetch_fptr)(void*, uint64_t, bool*);
 	void* page_cache_fetch_opaque;
@@ -229,14 +229,14 @@ typedef struct libxdc_config_s {
 	void* page_cache_fetch_opaque;
 	void* bitmap_ptr;
 	size_t bitmap_size;
-	uint32_t* signal_ptr;
-	uint32_t signal_size;
+	uint32_t* cov_ptr;
+	uint32_t cov_size;
 	bool align_psb;
 } libxdc_config_t;
 
 typedef struct libxdc_s {
 	fuzz_bitmap_t* fuzz_bitmap;
-	fuzz_signal_t* fuzz_signal;
+	fuzz_cov_t* fuzz_cov;
 	decoder_t* decoder;
 	disassembler_t* disassembler;
 
