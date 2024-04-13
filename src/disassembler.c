@@ -531,7 +531,7 @@ static inline void inform_disassembler_target_ip(disassembler_t* self, uint64_t 
 		reset_tracelet_tmp_cache(self->trace_cache->trace_cache);
 	}
 
-	nid = get_node(self, *entry_point, tnt_cache_state, failed_page, mode);
+	nid = get_node(self, *entry_point, tnt_cache_state, failed_page, mode);			// TODO: failed here, condition set
 
 	dispatch_type = self->cfg.type[nid];
 

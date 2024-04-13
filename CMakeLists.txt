@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(libxdc C)
-
-include_directories(./include)
+project(libxdc C CXX)
 
 # Support windows and linux
 if (CMAKE_HOST_WIN32)
@@ -45,6 +43,8 @@ aux_source_directory(${CMAKE_SOURCE_DIR}/src src_dir)
 set (HEADERS ${CMAKE_SOURCE_DIR}/libxdc.h)
 ADD_LIBRARY(xdc STATIC ${src_dir} ${HEADERS})
 
+target_include_directories(xdc PRIVATE ./include)
+
 if (WINDOWS)
 	target_include_directories(xdc PUBLIC "C:/Program Files (x86)/capstone/include")
 endif()
@@ -55,3 +55,9 @@ install(TARGETS xdc
 		ARCHIVE DESTINATION /usr/local/lib
  		LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}
 		PUBLIC_HEADER DESTINATION /usr/include)
+
+
+# Test libxdc
+# add_executable(ipt_test test/ipt_test.cc)
+# target_link_libraries(ipt_test PRIVATE xdc /usr/local/lib64/libcapstone.a)
+# target_compile_definitions(xdc PRIVATE DEBUG_TRACES)
