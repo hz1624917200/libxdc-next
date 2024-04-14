@@ -48,7 +48,7 @@ __attribute__ ((visibility ("default")))  uint16_t libxdc_get_release_version(vo
 
 __attribute__ ((visibility ("default")))  void libxdc_reset_trace_cache(libxdc_t* self){
   reset_trace_cache(self->disassembler);
-  // signal_dedup_flush(self->disassembler);
+  // cov_dedup_flush(self->disassembler);
 }
 
 /*
@@ -62,15 +62,15 @@ __attribute__ ((visibility ("default")))  libxdc_t* libxdc_init(libxdc_config_t*
   if (!config->bitmap_ptr)
     LOGGER("No bitmap provided, disable bitmap output\n");
   self->fuzz_bitmap = net_fuzz_bitmap(config->bitmap_ptr, config->bitmap_size);
-  if (config->signal_ptr) {
-    self->fuzz_signal = signal_result_init(config->signal_ptr, config->signal_size);
+  if (config->cov_ptr) {
+    self->fuzz_cov = cov_result_init(config->cov_ptr, config->cov_size);
   } else {
-    LOGGER("No signal space provided, disable signal output\n");
+    LOGGER("No coverage space provided, disable coverage output\n");
   }
   self->decoder = pt_decoder_init(config->align_psb);
-  self->disassembler = init_disassembler(config->filter, config->page_cache_fetch_fptr, config->page_cache_fetch_opaque, self->fuzz_bitmap, self->fuzz_signal);
-  if (config->signal_ptr)
-    signal_dedup_flush(self->disassembler);
+  self->disassembler = init_disassembler(config->filter, config->page_cache_fetch_fptr, config->page_cache_fetch_opaque, self->fuzz_bitmap, self->fuzz_cov);
+  if (config->cov_ptr)
+    cov_dedup_flush(self->disassembler);
   if ( !self->disassembler )
   {
     libxdc_free(self);

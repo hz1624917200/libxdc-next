@@ -54,9 +54,9 @@ typedef struct libxdc_config_s {
 	void* page_cache_fetch_opaque;
 	void* bitmap_ptr;
 	size_t bitmap_size;
-	// first size_t data used for storing signal count
-	uint32_t* signal_ptr;
-	uint32_t signal_size;
+	// first size_t data used for storing coverage count
+	uint32_t* cov_ptr;
+	uint32_t cov_size;
 	bool align_psb;
 } libxdc_config_t;
 
