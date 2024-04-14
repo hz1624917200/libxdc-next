@@ -56,8 +56,8 @@ install(TARGETS xdc
  		LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}
 		PUBLIC_HEADER DESTINATION /usr/include)
 
+# target_compile_definitions(xdc PRIVATE DEBUG_TRACES)
 
 # Test libxdc
-# add_executable(ipt_test test/ipt_test.cc)
-# target_link_libraries(ipt_test PRIVATE xdc /usr/local/lib64/libcapstone.a)
-# target_compile_definitions(xdc PRIVATE DEBUG_TRACES)
+add_executable(ipt_test test/ipt_test.cc)
+target_link_libraries(ipt_test PRIVATE xdc /usr/local/lib64/libcapstone.a)

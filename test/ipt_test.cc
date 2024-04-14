@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "ipt_test.h"
 
-const char* trace_file = "/root/test_syzkaller/trace/trace_data_0";
-char trace_data[1000000];
+const char* trace_file = "/root/test_syzkaller/trace/trace_page_fault";
+char trace_data[128 << 20];
 
 int main() {
 	// read trace data from trace_file
