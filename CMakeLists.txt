@@ -46,18 +46,21 @@ ADD_LIBRARY(xdc STATIC ${src_dir} ${HEADERS})
 target_include_directories(xdc PRIVATE ./include)
 
 if (WINDOWS)
-	target_include_directories(xdc PUBLIC "C:/Program Files (x86)/capstone/include")
+	target_include_directories(xdc PUBLIC "C:/Program Files/capstone/include")
 endif()
 
 set_target_properties(xdc PROPERTIES PUBLIC_HEADER ${HEADERS})
 
+include(GNUInstallDirs)
 install(TARGETS xdc
-		ARCHIVE DESTINATION /usr/local/lib
- 		LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}
-		PUBLIC_HEADER DESTINATION /usr/include)
+		ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # target_compile_definitions(xdc PRIVATE DEBUG_TRACES)
 
 # Test libxdc
-add_executable(ipt_test test/ipt_test.cc)
-target_link_libraries(ipt_test PRIVATE xdc /usr/local/lib64/libcapstone.a)
+if (!WINDOWS)
+	add_executable(ipt_test test/ipt_test.cc)
+	target_link_libraries(ipt_test PRIVATE xdc /usr/local/lib64/libcapstone.a)
+endif()
